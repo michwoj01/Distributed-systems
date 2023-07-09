@@ -1,0 +1,1 @@
+.\thrift-0.18.1.exe --gen java --out generated calculator.thrift

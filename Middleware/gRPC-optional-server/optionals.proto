@@ -1,0 +1,21 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_outer_classname = "Optionals";
+
+message Person {
+  string name = 1;
+  optional int32 id = 2;
+  optional string email = 3;
+  message Income {
+    repeated double taxes = 1;
+  }
+  optional Income income = 4;
+}
+
+message Median {
+  double med = 1;
+}
+
+service Calculator {
+  rpc CountMedian (Person) returns (Median) {}
+}

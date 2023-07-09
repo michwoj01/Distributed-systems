@@ -1,0 +1,37 @@
+syntax = "proto3";
+option java_multiple_files = true;
+option java_outer_classname = "RemoteService";
+
+package service;
+
+message Person {
+  string name = 1;
+  int32 id = 2;
+  string email = 3;
+
+  message Income {
+    repeated double taxes = 1;
+  }
+
+  Income income = 4;
+}
+
+message Median {
+  double med = 1;
+}
+
+message ArithmeticOpArguments {
+  int32 arg1 = 1;
+  int32 arg2 = 2;
+}
+
+message ArithmeticOpResult {
+  int32 res = 1;
+}
+
+service Service {
+  rpc Add (ArithmeticOpArguments) returns (ArithmeticOpResult) {}
+  rpc Subtract (ArithmeticOpArguments) returns (ArithmeticOpResult) {}
+  rpc Multiply (ArithmeticOpArguments) returns (ArithmeticOpResult) {}
+  rpc CountMedian (Person) returns (Median) {}
+}
