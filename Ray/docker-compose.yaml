@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+
+  ray-head:
+    build: .
+    shm_size: '1gb'
+    command:
+      [
+        "ray",
+        "start",
+        "--head",
+        "--dashboard-host",
+        "0.0.0.0",
+        "--block",
+        "--port",
+        "6379",
+        "--dashboard-port",
+        "8265",
+        "--include-dashboard",
+        "true"
+      ]
+    ports:
+      - 8265:8265
+      - 6379:6379
+      - 10001:10001
+    networks:
+      ray_net:
+        ipv4_address: 172.2.0.3
+
+  worker-1:
+    build: .
+    depends_on:
+      - ray-head
+    command: [ "ray", "start", "--address", "172.2.0.3:6379", "--block" ]
+    networks:
+      ray_net:
+        ipv4_address: 172.2.0.6
+
+  worker-2:
+    build: .
+    depends_on:
+      - ray-head
+    command: [ "ray", "start", "--address", "172.2.0.3:6379", "--block" ]
+    networks:
+      ray_net:
+        ipv4_address: 172.2.0.8
+
+  worker-3:
+    build: .
+    depends_on:
+      - ray-head
+    command: [ "ray", "start", "--address", "172.2.0.3:6379", "--block" ]
+    networks:
+      ray_net:
+        ipv4_address: 172.2.0.10
+
+networks:
+  ray_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.2.0.0/16
